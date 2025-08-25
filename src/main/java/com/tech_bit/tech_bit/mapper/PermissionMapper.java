@@ -6,7 +6,6 @@ import com.tech_bit.tech_bit.entity.Permission;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-import java.util.List;
 
 
 @Mapper(componentModel = "spring")
