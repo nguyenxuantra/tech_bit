@@ -24,7 +24,7 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableMethodSecurity
 public class SecurityConfig {
     private final String [] PUBLIC_ENDPOINTS_METHODS_GET = {"users/{userId}"};
-    private final String [] PUBLIC_ENDPOINTS_METHODS_POST = {"/auth/token"};
+    private final String [] PUBLIC_ENDPOINTS_METHODS_POST = {"auth/token"};
 
     @Value("${jwt.secret}")
     private String jwtSecret;
@@ -33,12 +33,12 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
        http.authorizeHttpRequests(request ->
 //               request.requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS_METHODS_GET).hasAuthority("ROLE_ADMIN")
-                       request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS_METHODS_POST).permitAll()
+                       request.requestMatchers(HttpMethod.POST,PUBLIC_ENDPOINTS_METHODS_POST).permitAll()
                        .anyRequest().authenticated());
-       http.oauth2ResourceServer(oauth2 ->
-               oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())
-                       .jwtAuthenticationConverter(jwtAuthenticationConverter()))
-                       .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
+        // http.oauth2ResourceServer(oauth2 ->
+        //        oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())
+        //                .jwtAuthenticationConverter(jwtAuthenticationConverter()))
+        //                .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
        http.csrf(AbstractHttpConfigurer::disable);
        return http.build();
     }

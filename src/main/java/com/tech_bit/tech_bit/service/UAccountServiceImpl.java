@@ -34,11 +34,12 @@ public class UAccountServiceImpl implements UAccountService {
     @Override
     public void createAccount(UAccountRequest accountRequest) {
         User user = userMapper.toUser(accountRequest);
+
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         HashSet<String> roles = new HashSet<>();
         roles.add(Role.USER.name());
-        user.setRoles(roles);
+        // user.setRoles(roles);
         userRepository.save(user);
     }
 
