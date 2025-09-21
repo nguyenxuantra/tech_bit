@@ -7,9 +7,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -23,25 +22,30 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    private final String [] PUBLIC_ENDPOINTS_METHODS_GET = {"users/{userId}"};
-    private final String [] PUBLIC_ENDPOINTS_METHODS_POST = {"auth/token"};
+    private final String[] PUBLIC_ENDPOINTS_METHODS_POST = {"/auth/token"};
 
     @Value("${jwt.secret}")
     private String jwtSecret;
 
+    @Bean 
+    public WebSecurityCustomizer webSecurityCustomizer(){
+        return (web)-> web.ignoring().requestMatchers(PUBLIC_ENDPOINTS_METHODS_POST);
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
        http.authorizeHttpRequests(request ->
-//               request.requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS_METHODS_GET).hasAuthority("ROLE_ADMIN")
-                       request.requestMatchers(HttpMethod.POST,PUBLIC_ENDPOINTS_METHODS_POST).permitAll()
+            
+                       request
                        .anyRequest().authenticated());
-        // http.oauth2ResourceServer(oauth2 ->
-        //        oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())
-        //                .jwtAuthenticationConverter(jwtAuthenticationConverter()))
-        //                .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
+        http.oauth2ResourceServer(oauth2 ->
+               oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())
+                       .jwtAuthenticationConverter(jwtAuthenticationConverter()))
+                       .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
        http.csrf(AbstractHttpConfigurer::disable);
        return http.build();
     }
+
     @Bean
     JwtDecoder jwtDecoder(){
         SecretKeySpec secretKey = new SecretKeySpec(jwtSecret.getBytes(), "HS512");

@@ -7,6 +7,7 @@ import com.tech_bit.tech_bit.dto.request.UAddressRequest;
 import com.tech_bit.tech_bit.dto.response.UAccountResponse;
 import com.tech_bit.tech_bit.service.UAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +39,7 @@ public class UAccountController {
                 .build();
     }
     // Cập nhật thông tin tài khoản
+    @PostAuthorize("returnObject.username == authentication.name")
     @PutMapping("/{userId}")
     ApiResponse<String> updateAccount(@PathVariable Integer userId){
         accountService.updateAccount(userId, null);

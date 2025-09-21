@@ -1,14 +1,16 @@
 package com.tech_bit.tech_bit.controller;
 
 import com.tech_bit.tech_bit.common.apiResponse.ApiResponse;
+import com.tech_bit.tech_bit.common.pageResponse.PageResponse;
 import com.tech_bit.tech_bit.dto.request.ACategoryRequest;
 import com.tech_bit.tech_bit.dto.response.ACategoryResponse;
+import com.tech_bit.tech_bit.dto.response.ProductResponse;
 import com.tech_bit.tech_bit.service.ACategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/admin/categories")
 public class ACategoryController {
 
     @Autowired
@@ -43,5 +45,21 @@ public class ACategoryController {
                 .code(200)
                 .message("Xóa danh mục thành công")
                 .build();
+    }
+    @GetMapping()
+    ApiResponse<PageResponse<ACategoryResponse>> getListProduct(
+        @RequestParam(value="search", required =false) String search,
+        @RequestParam(value="from_date", required = false) Long fromDate,
+        @RequestParam(value="to_date", required = false) Long toDate, 
+        @RequestParam(value="sort_by", required = false, defaultValue ="categoryId") String sortBy,
+        @RequestParam(value="sort_dir", required = false, defaultValue = "desc") String sortDir,
+        @RequestParam(value="page_no", required = false, defaultValue = "1") int pageNo,
+        @RequestParam(value="page_size", required = false, defaultValue = "5" ) int pageSize
+    ){
+        return ApiResponse.<PageResponse<ACategoryResponse>>builder()
+        .code(200)
+        .message("get success")
+        .result(categoryService.getListCategories(search, fromDate, toDate, sortBy, sortDir, pageNo, pageSize))
+        .build();
     }
 }

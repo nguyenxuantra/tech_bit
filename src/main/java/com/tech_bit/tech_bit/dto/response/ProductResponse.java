@@ -1,5 +1,4 @@
-package com.tech_bit.tech_bit.dto.request;
-
+package com.tech_bit.tech_bit.dto.response;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,12 +10,17 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ProductRequest {
+public class ProductResponse {
+    Integer productId;
     String name;
     String description;
-    Double price;
-    Double discount;
+    double price;
+    double discount;
     Integer stock;
+    String imageUrl;
+    double rating;
     String brand;
-    Integer categoryId;
+    boolean status;
+    String categoryName;
+    Long createdAt;
 }

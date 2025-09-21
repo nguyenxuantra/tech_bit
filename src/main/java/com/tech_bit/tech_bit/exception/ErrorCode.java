@@ -19,7 +19,8 @@ public enum ErrorCode {
     UNAUTHORIZED(1006, "You do not have permission", HttpStatus.FORBIDDEN),
     AUTHENTICATED(1007, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     PERMISSION_NOT_FOUND(1008,"Không tìm thấy quyền này", HttpStatus.NOT_FOUND),
-    PRODUCT_NOT_FOUND(1009,"Không tìm thấy sản phẩm này", HttpStatus.NOT_FOUND)
+    PRODUCT_NOT_FOUND(1009,"Không tìm thấy sản phẩm này", HttpStatus.NOT_FOUND),
+
     ;
     private final int code;
     private final String message;

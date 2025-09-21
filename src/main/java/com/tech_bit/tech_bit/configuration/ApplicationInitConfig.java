@@ -1,7 +1,6 @@
 package com.tech_bit.tech_bit.configuration;
-import com.tech_bit.tech_bit.entity.Role;
 import com.tech_bit.tech_bit.entity.User;
-import com.tech_bit.tech_bit.repository.RoleRepository;
+import com.tech_bit.tech_bit.enums.Role;
 import com.tech_bit.tech_bit.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -19,16 +18,12 @@ import java.util.Set;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ApplicationInitConfig {
-    RoleRepository roleRepository;
     @Bean
     ApplicationRunner applicationRunner(UserRepository userRepository){
         return args -> {
            if (userRepository.findByUsername("admin").isEmpty()){
-               Role role = new Role();
-               role.setName("admin"); 
-               roleRepository.save(role);
-               Set<Role> roles = new HashSet<>();
-               roles.add(role);
+               Set<String> roles = new HashSet<>();
+               roles.add(Role.ADMIN.name());
                User user = User.builder()
                        .password(passwordEncoder().encode("admin"))
                        .username("admin")

@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.text.ParseException;
-import java.util.Collection;
 import java.util.Date;
 import java.util.StringJoiner;
 
@@ -46,7 +45,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new AppException(ErrorCode.PASSWORD_NOT_MATCH);
         }
         return generateToken(user);
-
     }
     private String generateToken(User user) {
         try {
@@ -91,7 +89,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         StringJoiner stringJoiner = new StringJoiner(" ");
         if(!CollectionUtils.isEmpty(user.getRoles())){
             user.getRoles();
-            // user.getRoles().forEach(stringJoiner::add);
+            user.getRoles().forEach(stringJoiner::add);
         }
         return stringJoiner.toString();
     }

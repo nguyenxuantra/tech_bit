@@ -3,7 +3,6 @@ package com.tech_bit.tech_bit.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +24,10 @@ public class Product {
     private String description;
 
     @Column(name = "price")
-    private double price;
+    private Double price;
+
+    @Column(name = "discount")
+    private Double discount;
 
     @Column(name = "stock")
     private Integer stock;
@@ -34,11 +35,21 @@ public class Product {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(name = "category_id")
-    private Integer categoryId;
+    @Column(name = "rating")
+    private Double rating ;
+
+    @Column(name = "brand")
+    private String brand;
+
+    @Column(name = "status")
+    private boolean status = true;
 
     @Column(name = "created_at")
     private Long createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Categories categories;
 
     @PrePersist
     private void createdAt() {
