@@ -40,9 +40,6 @@ public class User {
 
     @Column(name = "updated_at")
     private Long updateAt;
-
-    @Column(name = "status")
-    private Boolean status;
     
     @Column(name = "roles")
     private Set<String> roles;
