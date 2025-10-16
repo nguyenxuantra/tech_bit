@@ -59,11 +59,11 @@ public class AProductService implements AProductServiceImpl{
                 .name(product.getName())
                 .description(product.getDescription())
                 .price(product.getPrice())
+                    .rating(product.getRating())
                 .discount(product.getDiscount())
                 .stock(product.getStock())
                 .imageUrl(product.getImageUrl())
                 .brand(product.getBrand())
-                .status(product.isStatus())
                 .categoryName(categoryName)
                 .createdAt(product.getCreatedAt())
                 .build();
