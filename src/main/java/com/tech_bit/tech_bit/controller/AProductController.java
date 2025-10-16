@@ -62,7 +62,7 @@ public class AProductController {
 
     @GetMapping()
     ApiResponse<PageResponse<ProductResponse>> getListProduct(
-        @RequestParam(value="search", required =false) String search,
+        @RequestParam(value="search", required =false, defaultValue ="") String search,
         @RequestParam(value="from_date", required = false) Long fromDate,
         @RequestParam(value="to_date", required = false) Long toDate, 
         @RequestParam(value="sort_by", required = false, defaultValue ="productId") String sortBy,

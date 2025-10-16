@@ -20,7 +20,6 @@ public class ProductResponse {
     String imageUrl;
     double rating;
     String brand;
-    boolean status;
     String categoryName;
     Long createdAt;
 }
