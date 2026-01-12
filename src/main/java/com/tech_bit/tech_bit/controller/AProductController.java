@@ -1,8 +1,6 @@
 package com.tech_bit.tech_bit.controller;
 
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +15,7 @@ import com.tech_bit.tech_bit.common.apiResponse.ApiResponse;
 import com.tech_bit.tech_bit.common.pageResponse.PageResponse;
 import com.tech_bit.tech_bit.dto.request.ProductRequest;
 import com.tech_bit.tech_bit.dto.response.ProductResponse;
-import com.tech_bit.tech_bit.service.AProductService;
+import com.tech_bit.tech_bit.service.admin.AProductService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

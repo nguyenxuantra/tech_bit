@@ -1,4 +1,4 @@
-package com.tech_bit.tech_bit.service;
+package com.tech_bit.tech_bit.service.admin;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;

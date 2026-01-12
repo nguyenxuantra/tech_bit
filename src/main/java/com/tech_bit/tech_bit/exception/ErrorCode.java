@@ -20,6 +20,14 @@ public enum ErrorCode {
     AUTHENTICATED(1007, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     PERMISSION_NOT_FOUND(1008,"Không tìm thấy quyền này", HttpStatus.NOT_FOUND),
     PRODUCT_NOT_FOUND(1009,"Không tìm thấy sản phẩm này", HttpStatus.NOT_FOUND),
+    CART_NOT_FOUND(1010,"Không tìm thấy giỏ hàng", HttpStatus.NOT_FOUND),
+    CART_ITEM_NOT_FOUND(1011,"Không tìm thấy sản phẩm trong giỏ hàng", HttpStatus.NOT_FOUND),
+    INSUFFICIENT_STOCK(1012,"Số lượng sản phẩm không đủ", HttpStatus.BAD_REQUEST),
+    ORDER_NOT_FOUND(1013,"Không tìm thấy đơn hàng", HttpStatus.NOT_FOUND),
+    CART_IS_EMPTY(1014,"Giỏ hàng trống", HttpStatus.BAD_REQUEST),
+    COUPON_NOT_FOUND(1015,"Không tìm thấy mã giảm giá", HttpStatus.NOT_FOUND),
+    COUPON_EXPIRED(1016,"Mã giảm giá đã hết hạn", HttpStatus.BAD_REQUEST),
+    COUPON_INACTIVE(1017,"Mã giảm giá không còn hiệu lực", HttpStatus.BAD_REQUEST),
 
     ;
     private final int code;

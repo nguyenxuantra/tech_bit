@@ -15,5 +15,4 @@ public class AAccountResponse {
     Integer totalOrder;
     Integer totalSpending;
     Long createdAt;
-    Boolean status;
 }

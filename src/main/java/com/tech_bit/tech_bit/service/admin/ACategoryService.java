@@ -1,4 +1,4 @@
-package com.tech_bit.tech_bit.service;
+package com.tech_bit.tech_bit.service.admin;
 
 import com.tech_bit.tech_bit.common.pageResponse.PageResponse;
 import com.tech_bit.tech_bit.dto.request.ACategoryRequest;

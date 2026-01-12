@@ -5,7 +5,7 @@ import com.tech_bit.tech_bit.common.apiResponse.ApiResponse;
 import com.tech_bit.tech_bit.dto.request.AuthenticationRequest;
 import com.tech_bit.tech_bit.dto.request.IntrospectRequest;
 import com.tech_bit.tech_bit.dto.response.IntrospectResponse;
-import com.tech_bit.tech_bit.service.AuthenticationService;
+import com.tech_bit.tech_bit.service.admin.AuthenticationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

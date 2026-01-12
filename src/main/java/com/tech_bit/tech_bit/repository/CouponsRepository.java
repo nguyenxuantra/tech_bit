@@ -1,12 +1,12 @@
 package com.tech_bit.tech_bit.repository;
 
-import com.tech_bit.tech_bit.entity.Cart;
+import com.tech_bit.tech_bit.entity.Coupons;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface CartRepository extends JpaRepository<Cart, Integer> {
-    Optional<Cart> findByUserId(Integer userId);
+public interface CouponsRepository extends JpaRepository<Coupons, Long> {
+    Optional<Coupons> findByCode(String code);
 }
