@@ -41,8 +41,6 @@ public class Product {
     @Column(name = "brand")
     private String brand;
 
-    @Column(name = "status")
-    private boolean status = true;
 
     @Column(name = "created_at")
     private Long createdAt;
