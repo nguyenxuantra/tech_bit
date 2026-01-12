@@ -1,0 +1,40 @@
+{
+  "store_name": "Tech Store",
+  "currency": "VND",
+  "products": [
+    {
+      "id": "P001",
+      "name": "Laptop Dell XPS 13",
+      "category": "Laptop",
+      "price": 30000000,
+      "description": "Laptop mỏng nhẹ, pin 12 giờ, phù hợp lập trình và văn phòng",
+      "specs": {
+        "cpu": "Intel Core i7",
+        "ram": "16GB",
+        "storage": "512GB SSD",
+        "screen": "13.4 inch"
+      },
+      "image_url": "https://example.com/images/dell-xps-13.jpg",
+      "stock": 10
+    },
+    {
+      "id": "P002",
+      "name": "iPhone 15",
+      "category": "Smartphone",
+      "price": 22000000,
+      "description": "Camera tốt, hiệu năng cao, pin cải thiện",
+      "specs": {
+        "chip": "A16 Bionic",
+        "screen": "6.1 inch",
+        "camera": "48MP"
+      },
+      "image_url": "https://example.com/images/iphone-15.jpg",
+      "stock": 25
+    }
+  ],
+  "policies": {
+    "warranty": "Bảo hành 12 tháng",
+    "return": "Đổi trả trong 7 ngày",
+    "payment": ["COD", "Chuyển khoản", "Ví điện tử"]
+  }
+}

@@ -18,3 +18,5 @@ VOLUME ["/app/uploads"]
 EXPOSE 8080
 
 ENTRYPOINT ["java","-jar","tech_bit.war"]
+
+
