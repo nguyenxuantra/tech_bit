@@ -74,4 +74,13 @@ public class AProductController {
         .result(productService.getAllProducts(search, fromDate, toDate, sortBy, sortDir, pageNo, pageSize))
         .build();
     }
+
+    @GetMapping("/{productId}")
+    ApiResponse<ProductResponse> getProductDetail(@PathVariable Integer productId) {
+        return ApiResponse.<ProductResponse>builder()
+            .code(200)
+            .message("Lấy thông tin sản phẩm thành công")
+            .result(productService.getProductDetail(productId))
+            .build();
+    }
 }

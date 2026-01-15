@@ -19,4 +19,6 @@ public class ProductRequest {
     Integer stock;
     String brand;
     Integer categoryId;
+    String imageUrl;
+    String publicId;
 }

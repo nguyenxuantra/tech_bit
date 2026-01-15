@@ -41,6 +41,8 @@ public class AProductService implements AProductServiceImpl {
         product.setDiscount(request.getDiscount());
         product.setStock(request.getStock());
         product.setBrand(request.getBrand());
+        product.setImageUrl(request.getImageUrl());
+        product.setPublicId(request.getPublicId());
         Categories category = categoryRepository.findById(request.getCategoryId()).orElseThrow(()-> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
         product.setCategories(category);
         productRepository.save(product);
@@ -87,7 +89,37 @@ public class AProductService implements AProductServiceImpl {
     @Override
     public void updateProduct(Integer productId, ProductRequest request ){
         Product product = productRepository.findById(productId).orElseThrow(()->new AppException(ErrorCode.PRODUCT_NOT_FOUND));
-        productMapper.updateProduct(product, request);
+        product.setName(request.getName());
+        product.setDescription(request.getDescription());
+        product.setPrice(request.getPrice());
+        product.setDiscount(request.getDiscount());
+        product.setStock(request.getStock());
+        product.setBrand(request.getBrand());
+        Categories categories = categoryRepository.findById(request.getCategoryId()).orElseThrow(()->new AppException(ErrorCode.CATEGORY_NOT_FOUND));
+        product.setCategories(categories);
+        product.setImageUrl(request.getImageUrl());
         productRepository.save(product);
+    }
+
+    @Override
+    public ProductResponse getProductDetail(Integer productId) {
+        Product product = productRepository.findById(productId)
+            .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+        
+        String categoryName = product.getCategories().getName();
+        
+        return ProductResponse.builder()
+            .productId(product.getProductId())
+            .name(product.getName())
+            .description(product.getDescription())
+            .price(product.getPrice())
+            .rating(product.getRating())
+            .discount(product.getDiscount())
+            .stock(product.getStock())
+            .imageUrl(product.getImageUrl())
+            .brand(product.getBrand())
+            .categoryName(categoryName)
+            .createdAt(product.getCreatedAt())
+            .build();
     }
 }

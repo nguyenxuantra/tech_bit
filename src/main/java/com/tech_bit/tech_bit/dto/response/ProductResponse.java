@@ -14,11 +14,11 @@ public class ProductResponse {
     Integer productId;
     String name;
     String description;
-    double price;
-    double discount;
+    Double price;
+    Double discount;
     Integer stock;
     String imageUrl;
-    double rating;
+    Double rating;
     String brand;
     String categoryName;
     Long createdAt;

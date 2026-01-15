@@ -1,9 +1,6 @@
 package com.tech_bit.tech_bit.dto.response;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
@@ -11,6 +8,7 @@ import java.util.List;
 @Data
 @Builder
 @RequiredArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderResponse {
     Long orderId;

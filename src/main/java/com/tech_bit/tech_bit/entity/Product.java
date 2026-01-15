@@ -41,6 +41,8 @@ public class Product {
     @Column(name = "brand")
     private String brand;
 
+    @Column(name = "public_id")
+    private String publicId;
 
     @Column(name = "created_at")
     private Long createdAt;

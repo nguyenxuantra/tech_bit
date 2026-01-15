@@ -10,4 +10,5 @@ public interface AProductServiceImpl {
     PageResponse<ProductResponse> getAllProducts(String search, Long fromDate, Long toDate, String sortBy, String sortDir, int page, int size);
     void deleteProduct(Integer productId);
     void updateProduct(Integer productId, ProductRequest request);
+    ProductResponse getProductDetail(Integer productId);
 }
