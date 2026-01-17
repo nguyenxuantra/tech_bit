@@ -6,7 +6,7 @@ import com.tech_bit.tech_bit.dto.response.CartResponse;
 import com.tech_bit.tech_bit.entity.Cart;
 import com.tech_bit.tech_bit.entity.CartItem;
 import com.tech_bit.tech_bit.entity.Product;
-import com.tech_bit.tech_bit.entity.User;
+import com.tech_bit.tech_bit.entity.Users;
 import com.tech_bit.tech_bit.exception.AppException;
 import com.tech_bit.tech_bit.exception.ErrorCode;
 import com.tech_bit.tech_bit.repository.CartItemRepository;
@@ -36,7 +36,7 @@ public class CartServiceImpl implements CartService {
     private Integer getCurrentUserId() {
         var context = SecurityContextHolder.getContext();
         String username = context.getAuthentication().getName();
-        User user = userRepository.findByUsername(username)
+        Users user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         return user.getUserId();
     }
@@ -180,6 +180,7 @@ public class CartServiceImpl implements CartService {
                             .productId(item.getProductId())
                             .productName(product.getName())
                             .productPrice(product.getPrice())
+                            .productDiscount(product.getDiscount())
                             .productImageUrl(product.getImageUrl())
                             .quantity(item.getQuantity())
                             .createdAt(item.getCreatedAt())

@@ -1,5 +1,5 @@
 package com.tech_bit.tech_bit.configuration;
-import com.tech_bit.tech_bit.entity.User;
+import com.tech_bit.tech_bit.entity.Users;
 import com.tech_bit.tech_bit.enums.Role;
 import com.tech_bit.tech_bit.repository.UserRepository;
 import lombok.AccessLevel;
@@ -24,7 +24,7 @@ public class ApplicationInitConfig {
            if (userRepository.findByUsername("admin").isEmpty()){
                Set<String> roles = new HashSet<>();
                roles.add(Role.ADMIN.name());
-               User user = User.builder()
+               Users user = Users.builder()
                        .password(passwordEncoder().encode("admin"))
                        .username("admin")
                        .email("admin@gmail.com")

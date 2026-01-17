@@ -31,7 +31,7 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    private final String[] PUBLIC_ENDPOINTS_METHODS_POST = {"/auth/token"};
+    private final String[] PUBLIC_ENDPOINTS_METHODS_POST = {"/auth/token","products"};
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
@@ -59,7 +59,8 @@ public class SecurityConfig {
 
     @Bean 
     public WebSecurityCustomizer webSecurityCustomizer(){
-        return (web)-> web.ignoring().requestMatchers(PUBLIC_ENDPOINTS_METHODS_POST);
+        return (web)-> web.ignoring().requestMatchers(PUBLIC_ENDPOINTS_METHODS_POST)
+                .requestMatchers(HttpMethod.GET, "/products/**");
     }
 
     @Bean

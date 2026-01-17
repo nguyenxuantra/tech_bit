@@ -62,7 +62,8 @@ public class AProductController {
     ApiResponse<PageResponse<ProductResponse>> getListProduct(
         @RequestParam(value="search", required =false, defaultValue ="") String search,
         @RequestParam(value="from_date", required = false) Long fromDate,
-        @RequestParam(value="to_date", required = false) Long toDate, 
+        @RequestParam(value="to_date", required = false) Long toDate,
+        @RequestParam(value="category_id", required = false) Integer categoryId,
         @RequestParam(value="sort_by", required = false, defaultValue ="productId") String sortBy,
         @RequestParam(value="sort_dir", required = false, defaultValue = "desc") String sortDir,
         @RequestParam(value="page_no", required = false, defaultValue = "1") int pageNo,
@@ -71,7 +72,7 @@ public class AProductController {
         return ApiResponse.<PageResponse<ProductResponse>>builder()
         .code(200)
         .message("get success")
-        .result(productService.getAllProducts(search, fromDate, toDate, sortBy, sortDir, pageNo, pageSize))
+        .result(productService.getAllProducts(search, fromDate, toDate, categoryId, sortBy, sortDir, pageNo, pageSize))
         .build();
     }
 

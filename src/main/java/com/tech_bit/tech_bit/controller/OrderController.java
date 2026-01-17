@@ -47,8 +47,10 @@ public class OrderController {
     public ApiResponse<PageResponse<OrderResponse>> getOrders(
             @RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(required = false) String status) {
-        PageResponse<OrderResponse> orders = orderService.getOrders(pageNo, pageSize, status);
+            @RequestParam(required = false) String status,
+            @RequestParam(value = "sort_by", required = false, defaultValue = "orderId") String sortBy,
+            @RequestParam(value = "sort_dir", required = false, defaultValue = "desc") String sortDir) {
+        PageResponse<OrderResponse> orders = orderService.getOrders(pageNo, pageSize, status, sortBy, sortDir);
         return ApiResponse.<PageResponse<OrderResponse>>builder()
                 .code(200)
                 .message("Success")

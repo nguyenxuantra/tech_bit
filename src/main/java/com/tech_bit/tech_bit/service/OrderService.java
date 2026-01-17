@@ -7,6 +7,6 @@ import com.tech_bit.tech_bit.common.pageResponse.PageResponse;
 public interface OrderService {
     OrderResponse createOrder(CreateOrderRequest request);
     OrderResponse approveOrder(Long orderId);
-    PageResponse<OrderResponse> getOrders(Integer pageNo, Integer pageSize, String status);
+    PageResponse<OrderResponse> getOrders(Integer pageNo, Integer pageSize, String status, String sortBy, String sortDir);
     OrderResponse getOrderById(Long orderId);
 }

@@ -1,10 +1,6 @@
 package com.tech_bit.tech_bit.entity;
 
-import java.util.HashSet;
 import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")

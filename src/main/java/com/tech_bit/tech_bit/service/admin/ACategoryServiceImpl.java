@@ -7,6 +7,7 @@ import com.tech_bit.tech_bit.entity.Categories;
 import com.tech_bit.tech_bit.exception.AppException;
 import com.tech_bit.tech_bit.exception.ErrorCode;
 import com.tech_bit.tech_bit.repository.CategoriesRepository;
+import com.tech_bit.tech_bit.repository.ProductRepository;
 import com.tech_bit.tech_bit.specification.CategorySpecification;
 
 import lombok.AccessLevel;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 public class ACategoryServiceImpl implements ACategoryService {
 
     CategoriesRepository categoriesRepository;
+    ProductRepository productRepository;
 
     @Override
     public void createCategory(ACategoryRequest categoryRequest) {
@@ -55,6 +57,14 @@ public class ACategoryServiceImpl implements ACategoryService {
     public void deleteCategory(Integer categoryId) {
         Categories category = categoriesRepository.findById(categoryId)
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
+        
+        // Kiểm tra xem có sản phẩm nào đang sử dụng danh mục này không
+        long productCount = productRepository.countByCategoryId(categoryId);
+        
+        if (productCount > 0) {
+            throw new AppException(ErrorCode.CATEGORY_IN_USE);
+        }
+        
         categoriesRepository.delete(category);
     }
 

@@ -42,18 +42,17 @@ public class AProductService implements AProductServiceImpl {
         product.setStock(request.getStock());
         product.setBrand(request.getBrand());
         product.setImageUrl(request.getImageUrl());
-        product.setPublicId(request.getPublicId());
         Categories category = categoryRepository.findById(request.getCategoryId()).orElseThrow(()-> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
         product.setCategories(category);
         productRepository.save(product);
     }
 
     @Override
-    public PageResponse<ProductResponse> getAllProducts(String search, Long fromDate, Long toDate, String sortBy, String sortDir, int page, int size){
+    public PageResponse<ProductResponse> getAllProducts(String search, Long fromDate, Long toDate, Integer categoryId, String sortBy, String sortDir, int page, int size){
         String sortByNew = sortBy.equalsIgnoreCase("categoryName" ) ?  "categories.name" : sortBy;
         Sort sort = sortDir.equalsIgnoreCase("desc") ? Sort.by(sortByNew).descending() : Sort.by(sortByNew).ascending();
         Pageable pageable = PageRequest.of(page-1, size, sort);
-        Page<Product> products =  productRepository.findAll(ProductSpecification.searchAllFields(search, fromDate, toDate),pageable);
+        Page<Product> products =  productRepository.findAll(ProductSpecification.searchAllFields(search, fromDate, toDate, categoryId),pageable);
         List<ProductResponse> productResult = products.stream().map(product ->{
             String categoryName = product.getCategories().getName();
             return ProductResponse.builder()

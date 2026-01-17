@@ -14,7 +14,7 @@ import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 
 public class ProductSpecification {
-    public static Specification<Product> searchAllFields(String keyword, Long fromDate, Long toDate){
+    public static Specification<Product> searchAllFields(String keyword, Long fromDate, Long toDate, Integer categoryId){
         return (root, query, cb)->{
             
             
@@ -38,6 +38,47 @@ public class ProductSpecification {
             if(toDate !=null){
                 predicates.add(cb.lessThanOrEqualTo(root.get("createdAt"), toDate));
             }
+            if(categoryId != null){
+                predicates.add(cb.equal(category.get("categoryId"), categoryId));
+            }
+            return cb.and(predicates.toArray(new Predicate[0]));
+        };
+    }
+    
+    public static Specification<Product> searchForUser(String keyword, Integer categoryId, Double minPrice, Double maxPrice, Boolean flashSale){
+        return (root, query, cb)->{
+            List<Predicate> predicates = new ArrayList<>();
+            Join<Product, Categories> category = root.join("categories", JoinType.LEFT);
+            
+            // Tìm kiếm theo tên sản phẩm
+            if(keyword != null && !keyword.trim().isEmpty()){
+                String likePattern = "%" + keyword.toLowerCase() + "%";
+                predicates.add(cb.like(cb.lower(root.get("name")), likePattern));
+            }
+            
+            // Lọc theo danh mục sản phẩm
+            if(categoryId != null){
+                predicates.add(cb.equal(category.get("categoryId"), categoryId));
+            }
+            
+            // Lọc theo giá bán (price range)
+            if(minPrice != null){
+                predicates.add(cb.greaterThanOrEqualTo(root.get("discount"), minPrice));
+            }
+            if(maxPrice != null){
+                predicates.add(cb.lessThanOrEqualTo(root.get("discount"), maxPrice));
+            }
+            
+            // Lọc sản phẩm flash sale
+            // discount là giá bán (giá đã giảm), không phải phần trăm
+            // Sản phẩm sale: discount < price (giá discount nhỏ hơn giá gốc)
+            // Nếu discount = price thì không phải sản phẩm sale
+            if(flashSale != null && flashSale){
+                // discount phải không null và nhỏ hơn price
+                predicates.add(cb.isNotNull(root.get("discount")));
+                predicates.add(cb.lessThan(root.get("discount"), root.get("price")));
+            }
+            
             return cb.and(predicates.toArray(new Predicate[0]));
         };
     }

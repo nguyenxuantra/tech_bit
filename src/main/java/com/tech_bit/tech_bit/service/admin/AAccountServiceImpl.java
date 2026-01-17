@@ -3,6 +3,7 @@
 
  import java.util.List;
 
+ import com.tech_bit.tech_bit.entity.Users;
  import org.springframework.data.domain.Page;
  import org.springframework.data.domain.PageRequest;
  import org.springframework.data.domain.Pageable;
@@ -11,7 +12,6 @@
 
  import com.tech_bit.tech_bit.common.pageResponse.PageResponse;
  import com.tech_bit.tech_bit.dto.response.AAccountResponse;
- import com.tech_bit.tech_bit.entity.User;
  import com.tech_bit.tech_bit.exception.AppException;
  import com.tech_bit.tech_bit.exception.ErrorCode;
  import com.tech_bit.tech_bit.repository.OrderRepository;
@@ -33,7 +33,7 @@
       public PageResponse<AAccountResponse> listUser(String search, Long fromDate, Long toDate, String sortBy, String sortDir, int page, int size) {
          Sort sort = sortDir.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
          Pageable pageable = PageRequest.of(page - 1, size, sort);
-         Page<User> listUser = userRepository.findAll(AccountSpecification.searchAllFields(search, fromDate, toDate), pageable);
+         Page<Users> listUser = userRepository.findAll(AccountSpecification.searchAllFields(search, fromDate, toDate), pageable);
          List<AAccountResponse> listUserResponse = listUser.stream().map(user->{
             List<com.tech_bit.tech_bit.entity.Order> orders = orderRepository.findByUserId(user.getUserId());
             int totalOrder = orders.size();
@@ -62,7 +62,7 @@
 
      @Override
      public AAccountResponse getUserDetail(Integer userId) {
-         User user = userRepository.findById(userId)
+         Users user = userRepository.findById(userId)
              .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
          
          List<com.tech_bit.tech_bit.entity.Order> orders = orderRepository.findByUserId(userId);

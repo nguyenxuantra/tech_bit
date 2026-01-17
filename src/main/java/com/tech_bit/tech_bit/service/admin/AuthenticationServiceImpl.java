@@ -8,7 +8,7 @@ import com.nimbusds.jwt.SignedJWT;
 import com.tech_bit.tech_bit.dto.request.AuthenticationRequest;
 import com.tech_bit.tech_bit.dto.request.IntrospectRequest;
 import com.tech_bit.tech_bit.dto.response.IntrospectResponse;
-import com.tech_bit.tech_bit.entity.User;
+import com.tech_bit.tech_bit.entity.Users;
 import com.tech_bit.tech_bit.exception.AppException;
 import com.tech_bit.tech_bit.exception.ErrorCode;
 import com.tech_bit.tech_bit.repository.UserRepository;
@@ -38,7 +38,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public String authenticate(AuthenticationRequest authenticationRequest) {
-         User user = userRepository.findByUsername(authenticationRequest.getUsername()).orElseThrow(()-> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+         Users user = userRepository.findByUsername(authenticationRequest.getUsername()).orElseThrow(()-> new AppException(ErrorCode.USERNAME_NOT_FOUND));
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         boolean authenticated = passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword());
         if(!authenticated){
@@ -46,7 +46,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         return generateToken(user);
     }
-    private String generateToken(User user) {
+    private String generateToken(Users user) {
         try {
             JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
@@ -85,7 +85,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     }
 
-    private String buildScope(User user){
+    private String buildScope(Users user){
         StringJoiner stringJoiner = new StringJoiner(" ");
         if(!CollectionUtils.isEmpty(user.getRoles())){
             user.getRoles();

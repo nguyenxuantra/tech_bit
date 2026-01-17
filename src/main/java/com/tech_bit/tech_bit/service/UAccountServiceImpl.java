@@ -5,7 +5,7 @@ import com.tech_bit.tech_bit.dto.request.UAccountRequest;
 import com.tech_bit.tech_bit.dto.request.UAddressRequest;
 import com.tech_bit.tech_bit.dto.response.UAccountResponse;
 import com.tech_bit.tech_bit.entity.Addresses;
-import com.tech_bit.tech_bit.entity.User;
+import com.tech_bit.tech_bit.entity.Users;
 import com.tech_bit.tech_bit.enums.Role;
 import com.tech_bit.tech_bit.exception.AppException;
 import com.tech_bit.tech_bit.exception.ErrorCode;
@@ -33,7 +33,7 @@ public class UAccountServiceImpl implements UAccountService {
 
     @Override
     public void createAccount(UAccountRequest accountRequest) {
-        User user = userMapper.toUser(accountRequest);
+        Users user = userMapper.toUser(accountRequest);
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         HashSet<String> roles = new HashSet<>();
@@ -49,7 +49,7 @@ public class UAccountServiceImpl implements UAccountService {
 
     @Override
     public void updateAccount(Integer userId, UAccountRequest accountRequest) {
-        User user = userRepository.findById(userId).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
+        Users user = userRepository.findById(userId).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
         userMapper.updateUser(user, accountRequest);
         userRepository.save(user);
     }
@@ -87,7 +87,7 @@ public class UAccountServiceImpl implements UAccountService {
     public UAccountResponse getMyInfo() {
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
-        User user = userRepository.findByUsername(name).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
+        Users user = userRepository.findByUsername(name).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
         return userMapper.toUAccountResponse(user);
     }
 }

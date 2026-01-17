@@ -16,4 +16,5 @@ public class CartItemResponse {
     String productImageUrl;
     Integer quantity;
     Long createdAt;
+    Double productDiscount;
 }

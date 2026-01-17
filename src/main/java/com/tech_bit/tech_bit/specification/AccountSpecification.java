@@ -3,14 +3,13 @@ package com.tech_bit.tech_bit.specification;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tech_bit.tech_bit.entity.Users;
 import org.springframework.data.jpa.domain.Specification;
-
-import com.tech_bit.tech_bit.entity.User;
 
 import jakarta.persistence.criteria.Predicate;
 
 public class AccountSpecification {
-    public static Specification<User> searchAllFields(String keyword, Long fromDate, Long toDate){
+    public static Specification<Users> searchAllFields(String keyword, Long fromDate, Long toDate){
         return (root, query, cb)->{
             List<Predicate> predicates = new ArrayList<>();
             if(keyword != null && !keyword.trim().isEmpty()){

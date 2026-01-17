@@ -14,6 +14,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
     private Integer getCurrentUserId() {
         var context = SecurityContextHolder.getContext();
         String username = context.getAuthentication().getName();
-        User user = userRepository.findByUsername(username)
+        Users user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         return user.getUserId();
     }
@@ -164,9 +165,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PageResponse<OrderResponse> getOrders(Integer pageNo, Integer pageSize, String status) {
+    public PageResponse<OrderResponse> getOrders(Integer pageNo, Integer pageSize, String status, String sortBy, String sortDir) {
         Integer userId = getCurrentUserId();
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        
+        // Default sort by orderId descending if not provided
+        String sortByField = (sortBy != null && !sortBy.isEmpty()) ? sortBy : "orderId";
+        Sort.Direction direction = (sortDir != null && sortDir.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortByField);
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
 
         Page<Order> orderPage;
         if (status != null && !status.isEmpty()) {

@@ -28,6 +28,7 @@ public enum ErrorCode {
     COUPON_NOT_FOUND(1015,"Không tìm thấy mã giảm giá", HttpStatus.NOT_FOUND),
     COUPON_EXPIRED(1016,"Mã giảm giá đã hết hạn", HttpStatus.BAD_REQUEST),
     COUPON_INACTIVE(1017,"Mã giảm giá không còn hiệu lực", HttpStatus.BAD_REQUEST),
+    CATEGORY_IN_USE(1018,"Không thể xóa danh mục vì đang có sản phẩm sử dụng", HttpStatus.BAD_REQUEST),
 
     ;
     private final int code;
