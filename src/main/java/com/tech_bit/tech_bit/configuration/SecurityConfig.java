@@ -31,7 +31,7 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    private final String[] PUBLIC_ENDPOINTS_METHODS_POST = {"/auth/token","products"};
+    private final String[] PUBLIC_ENDPOINTS_METHODS_POST = {"/auth/token","products","/api/v1/payment/vn-pay","/api/v1/payment/vn-pay-callback"};
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
