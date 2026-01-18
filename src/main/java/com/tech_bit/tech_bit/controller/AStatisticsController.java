@@ -29,10 +29,17 @@ public class AStatisticsController {
                 .build();
     }
 
+    /**
+     * Lấy thống kê doanh thu theo thời gian
+     * @param fromDate Ngày bắt đầu (format: yyyy-MM-dd) - nên truyền vào, nếu không sẽ mặc định là đầu tháng hiện tại
+     * @param toDate Ngày kết thúc (format: yyyy-MM-dd) - nên truyền vào, nếu không sẽ mặc định là cuối tháng hiện tại
+     * @param groupBy Nhóm theo: DAY | MONTH | YEAR (mặc định: DAY)
+     * @return Danh sách thống kê doanh thu theo thời gian
+     */
     @GetMapping("/time")
     public ApiResponse<List<TimeStatisticsResponse>> getTimeStatistics(
-            @RequestParam("fromDate") String fromDate,
-            @RequestParam("toDate") String toDate,
+            @RequestParam(value = "fromDate", required = false) String fromDate,
+            @RequestParam(value = "toDate", required = false) String toDate,
             @RequestParam(value = "groupBy", defaultValue = "DAY") String groupBy
     ) {
         return ApiResponse.<List<TimeStatisticsResponse>>builder()

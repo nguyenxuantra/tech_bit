@@ -71,6 +71,14 @@ public class AStatisticsServiceImpl implements AStatisticsService {
 
     @Override
     public List<TimeStatisticsResponse> getTimeStatistics(String fromDate, String toDate, String groupBy) {
+        // Nếu không truyền date, mặc định lấy tháng hiện tại
+        if (fromDate == null || fromDate.isEmpty()) {
+            fromDate = getCurrentMonthStartDate();
+        }
+        if (toDate == null || toDate.isEmpty()) {
+            toDate = getCurrentMonthEndDate();
+        }
+
         // Parse date strings (format: yyyy-MM-dd)
         long fromTimestamp = parseDateToTimestamp(fromDate);
         long toTimestamp = parseDateToTimestamp(toDate) + (24 * 60 * 60 * 1000) - 1; // End of day
@@ -189,6 +197,18 @@ public class AStatisticsServiceImpl implements AStatisticsService {
         LocalDate date = LocalDate.parse(dateStr, DateTimeFormatter.ISO_DATE);
         LocalDateTime startOfDay = date.atStartOfDay();
         return startOfDay.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
+
+    private String getCurrentMonthStartDate() {
+        LocalDate today = LocalDate.now();
+        LocalDate firstDayOfMonth = today.withDayOfMonth(1);
+        return firstDayOfMonth.format(DateTimeFormatter.ISO_DATE);
+    }
+
+    private String getCurrentMonthEndDate() {
+        LocalDate today = LocalDate.now();
+        LocalDate lastDayOfMonth = today.withDayOfMonth(today.lengthOfMonth());
+        return lastDayOfMonth.format(DateTimeFormatter.ISO_DATE);
     }
 
     private String formatTimestampByGroup(long timestamp, String groupBy) {
