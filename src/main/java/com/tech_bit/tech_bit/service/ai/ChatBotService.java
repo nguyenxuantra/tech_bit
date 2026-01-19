@@ -68,10 +68,17 @@ public class ChatBotService {
 
         Câu hỏi của khách hàng: "%s"
             
-        Hãy tư vấn để hiểu, ngắn gọn không dài dòng.
-        Giọng văn giống vơi một người nhân viên bán hàng
-        Câu hỏi chung chung chỉ trả lời xác nhận
-        Nếu người dùng hỏi chi tiết 1 sản phẩm nào đó thì chỉ giới thiệu 1 sản phẩm thôi
+                QUY TẮC BẮT BUỘC:
+                1. Nếu khách hàng chỉ hỏi CÓ hay KHÔNG, chỉ được trả lời xác nhận + hỏi lại nhu cầu.
+                2. KHÔNG tự ý giới thiệu sản phẩm nếu khách chưa yêu cầu.
+                3. Chỉ giới thiệu sản phẩm khi khách nói rõ:
+                   - Muốn xem sản phẩm
+                   - Muốn gợi ý
+                   - Muốn tư vấn
+                4. Trả lời ngắn gọn, lịch sự, tự nhiên như nhân viên thật.
+                5. Không dùng markdown, không quảng cáo dài dòng.
+                
+        
         """.formatted(productContext, userMessage);
     }
     private String callGemini(String prompt) {
