@@ -67,8 +67,11 @@ public class ChatBotService {
         %s
 
         Câu hỏi của khách hàng: "%s"
-
-        Hãy tư vấn ngắn gọn, dễ hiểu, thân thiện.
+            
+        Hãy tư vấn để hiểu, ngắn gọn không dài dòng.
+        Giọng văn giống vơi một người nhân viên bán hàng
+        Câu hỏi chung chung chỉ trả lời xác nhận
+        Nếu người dùng hỏi chi tiết 1 sản phẩm nào đó thì chỉ giới thiệu 1 sản phẩm thôi
         """.formatted(productContext, userMessage);
     }
     private String callGemini(String prompt) {
