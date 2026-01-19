@@ -49,10 +49,11 @@ public class ChatBotService {
 
         for (Product p : products) {
             sb.append(String.format(
-                    "- Tên: %s | Giá: %,.0f VNĐ | Mô tả: %s\n",
+                    "- Tên: %s | Giá: %,.0f VNĐ | Mô tả: %s | Ảnh sản phẩm: %s\n",
                     p.getName(),
                     p.getPrice(),
-                    p.getDescription()
+                    p.getDescription(),
+                    p.getImageUrl()
             ));
         }
         return sb.toString();
@@ -86,11 +87,11 @@ public class ChatBotService {
                                             Map.of("text", prompt)
                                     )
                             )
-                    ),
-                    "generationConfig", Map.of(
-                            "temperature", 0.4,
-                            "maxOutputTokens", 500
                     )
+//                    "generationConfig", Map.of(
+//                            "temperature", 0.4,
+//                            "maxOutputTokens", 500
+//                    )
             );
 
             HttpHeaders headers = new HttpHeaders();
@@ -117,5 +118,6 @@ public class ChatBotService {
             return "Xin lỗi, hệ thống AI đang gặp sự cố." + e.getMessage();
         }
     }
+
 
 }
