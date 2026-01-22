@@ -13,6 +13,6 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByUserId(Integer userId);
     List<Order> findByStatus(String status);
-    Page<Order> findByUserId(Integer userId, Pageable pageable);
-    Page<Order> findByUserIdAndStatus(Integer userId, String status, Pageable pageable);
+//    Page<Order> findByUserId(Integer userId, Pageable pageable);
+    Page<Order> findByStatus( String status, Pageable pageable);
 }
