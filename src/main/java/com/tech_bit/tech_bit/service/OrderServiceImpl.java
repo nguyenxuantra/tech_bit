@@ -50,13 +50,13 @@ public class OrderServiceImpl implements OrderService {
         Integer userId = getCurrentUserId();
 
         // Validate address
-        if (request.getAddressId() != null) {
-            Addresses address = addressesRepository.findById(request.getAddressId())
-                    .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_FOUND));
-            if (!address.getUserId().equals(userId)) {
-                throw new AppException(ErrorCode.ADDRESS_NOT_FOUND);
-            }
-        }
+//        if (request.getAddressId() != null) {
+//            Addresses address = addressesRepository.findById(request.getAddressId())
+//                    .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_FOUND));
+//            if (!address.getUserId().equals(userId)) {
+//                throw new AppException(ErrorCode.ADDRESS_NOT_FOUND);
+//            }
+//        }
 
         // Get user's cart
         Cart cart = cartRepository.findByUserId(userId)
@@ -68,45 +68,42 @@ public class OrderServiceImpl implements OrderService {
         }
 
         // Calculate total amount
-        double totalAmount = 0.0;
+        double totalAmount = 50000;
         for (CartItem cartItem : cartItems) {
             Product product = productRepository.findById(cartItem.getProductId())
                     .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
 
             // Check stock
-            if (product.getStock() < cartItem.getQuantity()) {
-                throw new AppException(ErrorCode.INSUFFICIENT_STOCK);
-            }
+//            if (product.getStock() < cartItem.getQuantity()) {
+//                throw new AppException(ErrorCode.INSUFFICIENT_STOCK);
+//            }
 
-            double itemPrice = product.getPrice();
-            if (product.getDiscount() != null && product.getDiscount() > 0) {
-                itemPrice = itemPrice * (1 - product.getDiscount() / 100);
-            }
-            totalAmount += itemPrice * cartItem.getQuantity();
+
+            totalAmount +=  product.getDiscount();
         }
 
         // Apply coupon if provided
-        Double discountAmount = 0.0;
-        if (request.getCouponId() != null) {
-            Coupons coupon = couponsRepository.findById(request.getCouponId())
-                    .orElseThrow(() -> new AppException(ErrorCode.COUPON_NOT_FOUND));
-
-            // Validate coupon
-            if (!coupon.getIsActive()) {
-                throw new AppException(ErrorCode.COUPON_INACTIVE);
-            }
-            if (coupon.getExpiryDate() < System.currentTimeMillis()) {
-                throw new AppException(ErrorCode.COUPON_EXPIRED);
-            }
-
-            // Apply discount
-            if ("PERCENTAGE".equalsIgnoreCase(coupon.getDiscountType())) {
-                discountAmount = totalAmount * (coupon.getDiscountValue() / 100);
-            } else {
-                discountAmount = coupon.getDiscountValue();
-            }
-            totalAmount -= discountAmount;
-        }
+//        Double discountAmount = 0.0;
+//        if (request.getCouponId() != null) {
+//            Coupons coupon = couponsRepository.findById(request.getCouponId())
+//                    .orElseThrow(() -> new AppException(ErrorCode.COUPON_NOT_FOUND));
+//
+//            // Validate coupon
+//            if (!coupon.getIsActive()) {
+//                throw new AppException(ErrorCode.COUPON_INACTIVE);
+//            }
+//            if (coupon.getExpiryDate() < System.currentTimeMillis()) {
+//                throw new AppException(ErrorCode.COUPON_EXPIRED);
+//            }
+//
+//            // Apply discount
+//            if ("PERCENTAGE".equalsIgnoreCase(coupon.getDiscountType())) {
+//                discountAmount = totalAmount * (coupon.getDiscountValue() / 100);
+//            } else {
+//                discountAmount = coupon.getDiscountValue();
+//            }
+//            totalAmount -= discountAmount;
+//        }
 
         // Create order
         Order order = Order.builder()
@@ -123,10 +120,7 @@ public class OrderServiceImpl implements OrderService {
             Product product = productRepository.findById(cartItem.getProductId())
                     .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
 
-            double itemPrice = product.getPrice();
-            if (product.getDiscount() != null && product.getDiscount() > 0) {
-                itemPrice = itemPrice * (1 - product.getDiscount() / 100);
-            }
+            double itemPrice = product.getDiscount();
 
             OrderItem orderItem = OrderItem.builder()
                     .order(order)
@@ -166,7 +160,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public PageResponse<OrderResponse> getOrders(Integer pageNo, Integer pageSize, String status, String sortBy, String sortDir) {
-        Integer userId = getCurrentUserId();
+
         
         // Default sort by orderId descending if not provided
         String sortByField = (sortBy != null && !sortBy.isEmpty()) ? sortBy : "orderId";
@@ -176,9 +170,9 @@ public class OrderServiceImpl implements OrderService {
 
         Page<Order> orderPage;
         if (status != null && !status.isEmpty()) {
-            orderPage = orderRepository.findByUserIdAndStatus(userId, status, pageable);
+            orderPage = orderRepository.findByStatus( status, pageable);
         } else {
-            orderPage = orderRepository.findByUserId(userId, pageable);
+            orderPage = orderRepository.findAll(pageable);
         }
 
         List<OrderResponse> orderResponses = orderPage.getContent().stream()
