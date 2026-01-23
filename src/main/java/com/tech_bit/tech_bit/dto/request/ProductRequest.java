@@ -7,15 +7,14 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Builder
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@NoArgsConstructor
 public class ProductRequest {
-    String name;
-    String description;
-    Double price;
-    Double discount;
-    Integer stock;
-    String brand;
-    Integer categoryId;
-    String imageUrl;
-    String publicId;
+    private String name;
+    private String description;
+    private Double price;
+    private Double discount;
+    private Integer stock;
+    private String brand;
+    private Integer categoryId;
+    private String imageUrl;
 }

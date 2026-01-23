@@ -194,10 +194,10 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
 
-        Integer userId = getCurrentUserId();
-        if (!order.getUserId().equals(userId)) {
-            throw new AppException(ErrorCode.ORDER_NOT_FOUND);
-        }
+//        Integer userId = getCurrentUserId();
+//        if (!order.getUserId().equals(userId)) {
+//            throw new AppException(ErrorCode.ORDER_NOT_FOUND);
+//        }
 
         return mapToOrderResponse(order);
     }
