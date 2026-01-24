@@ -14,6 +14,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer>, JpaS
     @Query("SELECT COUNT(p) FROM Product p WHERE p.categories.categoryId = :categoryId")
     long countByCategoryId(@Param("categoryId") Integer categoryId);
 
-    @Query("SELECT p from Product p order by p.createdAt desc limit 5")
+    @Query("SELECT p from Product p order by p.createdAt desc")
     List<Product> topFiveProduct();
 }
