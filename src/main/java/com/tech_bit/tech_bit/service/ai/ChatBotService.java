@@ -4,13 +4,16 @@ package com.tech_bit.tech_bit.service.ai;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech_bit.tech_bit.entity.Conversation;
+import com.tech_bit.tech_bit.entity.Message;
 import com.tech_bit.tech_bit.entity.Product;
 import com.tech_bit.tech_bit.entity.Users;
 import com.tech_bit.tech_bit.exception.AppException;
 import com.tech_bit.tech_bit.exception.ErrorCode;
 import com.tech_bit.tech_bit.repository.ConversationRepository;
+import com.tech_bit.tech_bit.repository.MessageRepository;
 import com.tech_bit.tech_bit.repository.ProductRepository;
 import com.tech_bit.tech_bit.repository.UserRepository;
+import com.tech_bit.tech_bit.util.Sender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,8 +25,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.tech_bit.tech_bit.dto.response.MessageResponse;
+
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -34,6 +40,7 @@ public class ChatBotService {
     private final ObjectMapper objectMapper;
     private final UserRepository userRepository;
     private final ConversationRepository conversationRepository;
+    private final MessageRepository messageRepository;
 
     @Value("${gemini.api.key}")
     private String apiKey;
@@ -143,9 +150,49 @@ public class ChatBotService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         return user.getUserId();
     }
-    private void saveMessage(String userMessage){
+    public void saveMessage(String userMessage){
         Integer userId = getCurrentUserId();
-//        Conversation conversation = conversationRepository.findByU
+        
+        // Kiểm tra xem đã có conversation với userId này chưa
+        Conversation conversation = conversationRepository.findByUserId(userId.longValue())
+                .orElse(null);
+        
+        // Nếu chưa có conversation thì tạo mới
+        if (conversation == null) {
+            conversation = new Conversation();
+            conversation.setUserId(userId.longValue());
+            conversation = conversationRepository.save(conversation);
+        }
+        
+        // Lưu message của người dùng
+        Message message = new Message();
+        message.setConversation(conversation);
+        message.setSender(Sender.USER);
+        message.setContent(userMessage);
+        message.setCreatedAt(System.currentTimeMillis());
+        
+        messageRepository.save(message);
+    }
+
+    public List<MessageResponse> getMessagesByUserId(Long userId) {
+        // Lấy tất cả messages của user theo userId
+        List<Message> messages = messageRepository.findByConversation_UserId(userId);
+        
+        // Chuyển đổi sang MessageResponse
+        return messages.stream()
+                .map(message -> MessageResponse.builder()
+                        .id(message.getId())
+                        .conversationId(message.getConversation().getId())
+                        .sender(message.getSender())
+                        .content(message.getContent())
+                        .createdAt(message.getCreatedAt())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    public List<MessageResponse> getCurrentUserMessages() {
+        Integer userId = getCurrentUserId();
+        return getMessagesByUserId(userId.longValue());
     }
 
 }
