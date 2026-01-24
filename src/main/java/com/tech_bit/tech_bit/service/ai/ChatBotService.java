@@ -77,8 +77,7 @@ public class ChatBotService {
                    - Muốn tư vấn
                 4. Trả lời ngắn gọn, lịch sự, tự nhiên như nhân viên thật.
                 5. Không dùng markdown, không quảng cáo dài dòng.
-                
-        
+                6. Tư vấn sản phẩm phải gửi đủ tên, giá, mô tả, ảnh sản phẩm 
         """.formatted(productContext, userMessage);
     }
     private String callGemini(String prompt) {
