@@ -14,11 +14,5 @@ public class Conversation {
     private Long id;
     // nếu có user login
     private Long userId;
-
-    private String title; // ví dụ: "Tư vấn laptop gaming"
-
-    private Long createdAt;
-
-    private Long updatedAt;
 }
 

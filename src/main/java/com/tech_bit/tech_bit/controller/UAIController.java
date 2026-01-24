@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UAIController {
     private final ChatBotService chatBotService;
-    private final MessageService messageService;
 
     @PostMapping("/chat")
     public ApiResponse<String> chatbot(@RequestBody UChatRequest uChatRequest) {
@@ -26,12 +25,12 @@ public class UAIController {
                 .build();
     }
 
-    @PostMapping("/messages/save")
-    public ApiResponse<Void> saveUserMessage(@RequestBody SaveMessageRequest request) {
-        messageService.saveUserMessage(request);
-        return ApiResponse.<Void>builder()
-                .code(200)
-                .message("Lưu tin nhắn thành công")
-                .build();
-    }
+//    @PostMapping("/messages/save")
+//    public ApiResponse<Void> saveUserMessage(@RequestBody SaveMessageRequest request) {
+//        messageService.saveUserMessage(request);
+//        return ApiResponse.<Void>builder()
+//                .code(200)
+//                .message("Lưu tin nhắn thành công")
+//                .build();
+//    }
 }

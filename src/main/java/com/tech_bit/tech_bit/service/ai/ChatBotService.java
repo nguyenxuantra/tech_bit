@@ -3,8 +3,14 @@ package com.tech_bit.tech_bit.service.ai;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tech_bit.tech_bit.entity.Conversation;
 import com.tech_bit.tech_bit.entity.Product;
+import com.tech_bit.tech_bit.entity.Users;
+import com.tech_bit.tech_bit.exception.AppException;
+import com.tech_bit.tech_bit.exception.ErrorCode;
+import com.tech_bit.tech_bit.repository.ConversationRepository;
 import com.tech_bit.tech_bit.repository.ProductRepository;
+import com.tech_bit.tech_bit.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +18,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,6 +32,8 @@ public class ChatBotService {
     private final ProductRepository productRepository;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
+    private final UserRepository userRepository;
+    private final ConversationRepository conversationRepository;
 
     @Value("${gemini.api.key}")
     private String apiKey;
@@ -127,6 +136,16 @@ public class ChatBotService {
             return "Xin lỗi, hệ thống AI đang gặp sự cố." + e.getMessage();
         }
     }
-
+    private Integer getCurrentUserId() {
+        var context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getName();
+        Users user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        return user.getUserId();
+    }
+    private void saveMessage(String userMessage){
+        Integer userId = getCurrentUserId();
+//        Conversation conversation = conversationRepository.findByU
+    }
 
 }
