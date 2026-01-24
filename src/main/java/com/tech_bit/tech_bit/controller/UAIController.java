@@ -25,23 +25,23 @@ public class UAIController {
                 .build();
     }
 
-    @GetMapping("/messages")
-    public ApiResponse<List<MessageResponse>> getMessages() {
-        List<MessageResponse> messages = chatBotService.getCurrentUserMessages();
-        return ApiResponse.<List<MessageResponse>>builder()
-                .code(200)
-                .message("Lấy danh sách tin nhắn thành công")
-                .result(messages)
-                .build();
-    }
+//    @GetMapping("/messages")
+//    public ApiResponse<List<MessageResponse>> getMessages() {
+//        List<MessageResponse> messages = chatBotService.getCurrentUserMessages();
+//        return ApiResponse.<List<MessageResponse>>builder()
+//                .code(200)
+//                .message("Lấy danh sách tin nhắn thành công")
+//                .result(messages)
+//                .build();
+//    }
 
-    @GetMapping("/messages/{userId}")
-    public ApiResponse<List<MessageResponse>> getMessagesByUserId(@PathVariable Long userId) {
-        List<MessageResponse> messages = chatBotService.getMessagesByUserId(userId);
-        return ApiResponse.<List<MessageResponse>>builder()
-                .code(200)
-                .message("Lấy danh sách tin nhắn thành công")
-                .result(messages)
-                .build();
-    }
+//    @GetMapping("/messages/{userId}")
+//    public ApiResponse<List<MessageResponse>> getMessagesByUserId(@PathVariable Long userId) {
+//        List<MessageResponse> messages = chatBotService.getMessagesByUserId(userId);
+//        return ApiResponse.<List<MessageResponse>>builder()
+//                .code(200)
+//                .message("Lấy danh sách tin nhắn thành công")
+//                .result(messages)
+//                .build();
+//    }
 }

@@ -46,12 +46,15 @@ public class ChatBotService {
     private String apiKey;
 
     public String chatWithAi(String userMessage){
+
         // lấy sản phẩm
         List<Product> products = productRepository.topFiveProduct();
         // prompt
         String productContext = buildProductContext(products);
-        String prompt = buildPrompt(productContext, userMessage);
-
+        List<String> chatHistory = getCurrentUserMessages();
+        String chatHistoryContext = buildChatHistory(chatHistory);
+        String prompt = buildPrompt(productContext, chatHistoryContext, userMessage);
+        saveMessage(userMessage);
         return callGemini(prompt);
     }
 
@@ -74,14 +77,27 @@ public class ChatBotService {
         }
         return sb.toString();
     }
-    private String buildPrompt(String productContext, String userMessage) {
+    private String buildChatHistory(List<String> messages) {
+        if (messages.isEmpty()) {
+            return "Chưa có hội thoại trước đó.";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Lịch sử hội thoại:\n");
+
+        for (String m : messages) {
+            sb.append("Khách hàng: ").append(m).append("\n");
+        }
+        return sb.toString();
+    }
+    private String buildPrompt(String productContext,String chatHistoryContext, String userMessage) {
         return """
         Bạn là nhân viên tư vấn bán hàng cho website thương mại điện tử.
         Chỉ sử dụng thông tin trong danh sách sản phẩm bên dưới để tư vấn.
         Không được bịa thêm sản phẩm ngoài danh sách.
 
         %s
-
+        %s
         Câu hỏi của khách hàng: "%s"
             
                 QUY TẮC BẮT BUỘC:
@@ -94,7 +110,7 @@ public class ChatBotService {
                 4. Trả lời ngắn gọn, lịch sự, tự nhiên như nhân viên thật.
                 5. Không dùng markdown, không quảng cáo dài dòng.
                 6. Tư vấn sản phẩm phải gửi đủ tên, giá, mô tả, ảnh sản phẩm 
-        """.formatted(productContext, userMessage);
+        """.formatted(productContext, chatHistoryContext, userMessage);
     }
     private String callGemini(String prompt) {
         log.warn("day prompt: {}", prompt);
@@ -174,23 +190,16 @@ public class ChatBotService {
         messageRepository.save(message);
     }
 
-    public List<MessageResponse> getMessagesByUserId(Long userId) {
+    public List<String> getMessagesByUserId(Long userId) {
         // Lấy tất cả messages của user theo userId
-        List<Message> messages = messageRepository.findByConversation_UserId(userId);
+        List<Message> messages = messageRepository.findTop10ByConversation_UserIdOrderByCreatedAtDesc(userId);
         
         // Chuyển đổi sang MessageResponse
         return messages.stream()
-                .map(message -> MessageResponse.builder()
-                        .id(message.getId())
-                        .conversationId(message.getConversation().getId())
-                        .sender(message.getSender())
-                        .content(message.getContent())
-                        .createdAt(message.getCreatedAt())
-                        .build())
-                .collect(Collectors.toList());
+                .map(Message::getContent).toList();
     }
 
-    public List<MessageResponse> getCurrentUserMessages() {
+    public List<String> getCurrentUserMessages() {
         Integer userId = getCurrentUserId();
         return getMessagesByUserId(userId.longValue());
     }
