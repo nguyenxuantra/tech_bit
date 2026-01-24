@@ -3,9 +3,11 @@ package com.tech_bit.tech_bit.entity;
 
 import com.tech_bit.tech_bit.util.Sender;
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "messages")
+@Data
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
