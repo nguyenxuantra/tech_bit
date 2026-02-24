@@ -68,11 +68,12 @@ public class ChatBotService {
 
         for (Product p : products) {
             sb.append(String.format(
-                    "- Tên: %s | Giá: %,.0f VNĐ | Mô tả: %s | Ảnh sản phẩm: %s\n",
+                    "- Tên: %s | Giá gốc: %,.0f VNĐ | Mô tả: %s | Ảnh sản phẩm: %s | Giá sau khi giảm: %s\n",
                     p.getName(),
                     p.getPrice(),
                     p.getDescription(),
-                    p.getImageUrl()
+                    p.getImageUrl(),
+                    p.getDiscount()
             ));
         }
         return sb.toString();
@@ -107,9 +108,10 @@ public class ChatBotService {
                    - Muốn xem sản phẩm
                    - Muốn gợi ý
                    - Muốn tư vấn
-                4. Trả lời ngắn gọn, lịch sự, tự nhiên như nhân viên thật.
-                5. Không dùng markdown, không quảng cáo dài dòng.
-                6. Tư vấn sản phẩm phải gửi đủ tên, giá, mô tả, ảnh sản phẩm 
+                4. Tư vấn sản phẩm phải gửi đủ tên, giá, mô tả, ảnh sản phẩm 
+                5. Trả lời ngắn gọn, lịch sự, tự nhiên như nhân viên thật.
+                6. Không dùng markdown, không quảng cáo dài dòng.
+                
         """.formatted(productContext, chatHistoryContext, userMessage);
     }
     private String callGemini(String prompt) {

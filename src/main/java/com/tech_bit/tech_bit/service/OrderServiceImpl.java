@@ -68,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         // Calculate total amount
-        double totalAmount = 50000;
+        double totalAmount = 0;
         for (CartItem cartItem : cartItems) {
             Product product = productRepository.findById(cartItem.getProductId())
                     .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
